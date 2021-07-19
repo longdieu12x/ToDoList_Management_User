@@ -1,0 +1,105 @@
+Khoi dong 1 project:
+    npm init vite-app <project-name>
+Chay 1 project
+    npm run dev
+Link: checkout https://vuejs.github.io/vetur/
+
+Goi bien:
+
+Ta co the them state bang cach:
+dau tien phai import {reactive, computed, onMounted, watch} from 'vue'
+props: [],
+setup(props){
+    const state = reactive([
+        tat ca cac bien o data
+    ])
+    return {
+        state,
+    }
+    //...
+    chung ta co the lam nhieu thu khac vi du
+     const characters = ref([])
+     const loadingState = ref(false)
+ 
+     const fetchAll = () => {
+       loadingState.value = 'loading'
+       return axios.get('https://rickandmortyapi.com/api/character')
+         .then(response => {
+           loadingState.value = 'success'
+           characters.value = response.data.results
+         })}
+     const orderKey = ref('id')
+     const charactersOrdered = computed(() => {
+       return orderBy(characters.value, orderKey.value)
+     })
+ 
+     const setOrderKey = (key) => {
+       orderKey.value = key
+     }
+      return {characters, loadingState, fetchAll, charactersOrdered, orderKey, setOrderKey} // render context
+    },
+
+    // ta co the goi method trong set up
+    function addTodo(){
+        ...
+    }
+    
+    // Cach dung computed
+    const itemLeft = computed(() => {
+        return state.todos.filter(todo => ...);
+    }) ( Day la cach dung computed o setup )
+
+    //Cach goi ham mount
+    onMounted(() => {
+        console.log('Todo mounted');
+        console.log(props.title) (Ta co the dung props bang cach pass bien props vao setup)
+    })
+
+    // ham watch
+    watch(){
+        () => (thing you watching for) state.todoId,
+        (newValue,oldValue) => {
+            console.log(newValue);
+            console.log(oldValue);
+        }
+    }
+    watch o ben ngoai se viet nhu sau:
+    watch: {
+        todoId(newValue,oldValue){
+            console.log(newValue);
+            console.log(oldValue);
+        }
+    }
+
+    //
+    return {
+        addTodo,
+        itemLeft
+    };
+}
+luc nay o template muon goi thi state.tham so trong bien
+=> su dung composition api
+
+Su khac biet giua reactive va ref:
+    object,array nen dung reactive
+    number,string, boolean nen dung ref
+    ref(4) => se tao ra 1 object co value = 4
+    dat bien
+    todoId=ref(4) thi khi muon chinh sua todoId thi phai la todoId.value
+
+Dung return toRefs(bien) de khac phuc tinh trang reactive loss
+
+
+Teleport:
+    bao boc teleport vao 1 component, giong teleport trong react
+    <teleport to='#destination'>
+        <div>Hello</div>
+    </teleport>
+
+    => vao muc index.html dat 1 cai <div id="destination">Hello (se duoc chuyen vao day)</div>
+
+Ta co the dung v-model cho thanh phan con tu parent:
+    v-model:name(name cua input) de pass bien tu parent vao
+    va ben trong input cua thanh phan con:
+        Phai dung @input="e => $emit('update:name',e.target.value')" thi e.target.value se truyen ra bien name o parent
+                @input="e => $emit('update:email',e.target.value')" thi e.target.value se truyen ra bien email o parent
